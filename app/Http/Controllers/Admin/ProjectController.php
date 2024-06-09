@@ -8,6 +8,7 @@ use App\Models\Project;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Type;
+use App\Models\Technology;
 
 class ProjectController extends Controller
 {
@@ -103,7 +104,6 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-
         $data = [
             'project' => $project
         ];
