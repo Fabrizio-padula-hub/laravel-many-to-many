@@ -32,6 +32,20 @@
                 {{$project->type ? $project->type->name : 'Nessuno'}}
             </li>
 
+            {{-- Tecnologie --}}
+            <li class="list-group-item">
+                <strong>Technologies</strong>:
+                @if (count($project->technologies) > 0)
+                    @foreach ($project->technologies as $technology)
+                        {{$technology->name}}
+                    @endforeach
+                @else
+                    Nessuna tecnologia associata
+                @endif
+                
+                
+            </li>
+
             {{-- Slug --}}
             <li class="list-group-item">
                 <strong>Slug</strong>:
