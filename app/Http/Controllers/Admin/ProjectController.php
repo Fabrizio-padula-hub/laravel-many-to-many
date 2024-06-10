@@ -36,10 +36,13 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
+        $technologies = Technology::all();
 
         $data = [
-            'types'=>$types
+            'types'=>$types,
+            'technology'=>$technologies
         ];
+
 
         return view('admin.projects.create', $data);
     }
@@ -58,7 +61,8 @@ class ProjectController extends Controller
                 'client_name' => 'required|min:5|max:150',
                 'summary'=> 'nullable',
                 'cover_image'=> 'nullable|image|max:512',
-                'type_id'=> 'nullable|exists:types,id'
+                'type_id'=> 'nullable|exists:types,id',
+                'tags' => 'exists:technologies,id'
             ],
             [
                 'name.required' => 'Campo obbligatorio',
@@ -89,6 +93,10 @@ class ProjectController extends Controller
         $newProject->fill($formData);
         $newProject->slug = Str::slug($newProject->name, '-');
         $newProject->save();
+
+        if($request->has('technologies')){
+            $newProject->technologies()->attach($formData['technologies']);
+        };
 
         session()->flash('success', 'Progetto creato con successo!');
 

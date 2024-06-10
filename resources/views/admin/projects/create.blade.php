@@ -49,6 +49,23 @@
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
 
+        {{-- Selezione tecnologie --}}
+        <div class="mb-3">
+            <span>Technology</span>
+
+            @foreach ($technology as $technology)
+                <div class="form-check form-switch">
+                    <input class="form-check-input" @checked(in_array($technology->id, old('technologies', []))) name="technologies[]" type="checkbox" value="{{ $technology->id }}" role="switch" id="technologies-{{ $technology->id }}">
+                    <label class="form-check-label" for="technologies-{{ $technology->id }}">
+                        {{ $technology->name }}
+                    </label>
+                </div>
+            @endforeach
+        </div>
+        @error('technologies')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+
         {{-- Descrizione --}}
         <div class="mb-3">
             <label for="summary" class="form-label">Summary</label>
