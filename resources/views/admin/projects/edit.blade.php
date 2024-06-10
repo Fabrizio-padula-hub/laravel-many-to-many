@@ -17,6 +17,15 @@
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
 
+        {{-- Nome cliente --}}
+        <div class="mb-3">
+            <label for="client_name" class="form-label">Client Name</label>
+            <input type="text" class="form-control" id="client_name" name="client_name" value="{{ $project->client_name }}">
+        </div>
+        @error('client_name')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+
         {{-- immagine --}}
         <label for="cover_image" class="form-label">Image</label>
         <div class="card mb-3">
@@ -51,13 +60,26 @@
         @error('type_id')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        
-        {{-- Nome cliente --}}
+
+        {{-- Selezione tecnologie --}}
         <div class="mb-3">
-            <label for="client_name" class="form-label">Client Name</label>
-            <input type="text" class="form-control" id="client_name" name="client_name" value="{{ $project->client_name }}">
+            <span>Technology</span>
+
+            @foreach ($technology as $technology)
+                <div class="form-check form-switch">
+                    @if ($errors->any())
+                        <input class="form-check-input" @checked(in_array($technology->id, old('technologies', []))) name="technologies[]" type="checkbox" value="{{ $technology->id }}" role="switch" id="technologies-{{ $technology->id }}">
+                    @else
+                        <input class="form-check-input" @checked($project->technologies->contains($technology)) name="technologies[]" type="checkbox" value="{{ $technology->id }}" role="switch" id="technologies-{{ $technology->id }}">
+                    @endif
+
+                    <label class="form-check-label" for="technologies-{{ $technology->id }}">
+                        {{ $technology->name }}
+                    </label>
+                </div>
+            @endforeach
         </div>
-        @error('client_name')
+        @error('technologies')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
 

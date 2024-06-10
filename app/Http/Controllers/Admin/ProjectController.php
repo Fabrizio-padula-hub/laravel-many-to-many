@@ -62,7 +62,7 @@ class ProjectController extends Controller
                 'summary'=> 'nullable',
                 'cover_image'=> 'nullable|image|max:512',
                 'type_id'=> 'nullable|exists:types,id',
-                'tags' => 'exists:technologies,id'
+                'technologies' => 'exists:technologies,id'
             ],
             [
                 'name.required' => 'Campo obbligatorio',
@@ -129,10 +129,12 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
+        $technologies = Technology::all();
 
         $data = [
             'project' => $project,
-            'types'=>$types
+            'types'=>$types,
+            'technology'=>$technologies
         ];
 
 
@@ -154,7 +156,8 @@ class ProjectController extends Controller
                 'client_name' => 'required|min:5|max:150',
                 'summary'=> 'nullable',
                 'cover_image'=> 'nullable|image|max:512',
-                'type_id'=> 'nullable|exists:types,id'
+                'type_id'=> 'nullable|exists:types,id',
+                'technologies' => 'exists:technologies,id'
             ],
             [
                 'name.required' => 'Campo obbligatorio',
@@ -183,6 +186,11 @@ class ProjectController extends Controller
         $project->slug = Str::slug($formData['name'], '-');
         $project->update($formData);
         
+        if($request->has('technologies')){
+            $project->technologies()->sync($formData['technologies']);
+        }else{
+            $project->technologies()->sync([]);
+        };
 
         session()->flash('success', 'Progetto modificato con successo!');
 
